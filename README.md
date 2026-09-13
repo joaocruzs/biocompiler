@@ -1,182 +1,108 @@
-# BioCompiler 🧬
+# BioCompiler
 
-Projeto de bioinformática desenvolvido para simular parte do fluxo da informação genética:
+Projeto acadêmico de bioinformática desenvolvido para simular, de forma didática, etapas do fluxo de informação genética.
 
-**DNA → pré-mRNA**
+## 🧬 Sobre o projeto
 
-O sistema recebe sequências de DNA, realiza validações biológicas, identifica códons de início e término, detecta possíveis mutações e realiza a transcrição da sequência para pré-mRNA.
+O BioCompiler simula etapas do processamento de informações genéticas utilizando programação.
 
----
+O projeto está dividido em versões:
 
-## Funcionalidades
+* **BioCompiler 1.0 — DNA Processor**
+* **BioCompiler 2.0 — RNA Processor**
 
-O BioCompiler é capaz de:
+O BioCompiler 2.0 recebe um pré-mRNA e simula sua maturação até a formação do mRNA maduro.
 
-* Validar sequências de DNA;
-* Detectar bases inválidas;
-* Identificar o códon START (`ATG`);
-* Identificar códons STOP (`TAA`, `TAG`, `TGA`);
-* Determinar o quadro de leitura em trincas;
-* Detectar possíveis frameshifts;
-* Detectar STOP prematuro (nonsense);
-* Transcrever DNA para pré-mRNA;
-* Processar múltiplas sequências através de arquivos `.txt`;
-* Gerar relatórios consolidados;
-* Disponibilizar uma API REST utilizando FastAPI.
+## 🧪 BioCompiler 1.0
 
----
+O BioCompiler 1.0 trabalha com uma sequência de DNA e realiza:
 
-## Casos analisados
+* validação das bases A, T, C e G;
+* identificação de START;
+* identificação de STOP;
+* detecção de frameshift;
+* detecção de STOP prematuro;
+* transcrição de DNA para pré-mRNA;
+* geração de relatório.
 
-| Caso            | Resultado                         |
-| --------------- | --------------------------------- |
-| Entrada correta | `CORRETO`                         |
-| Base inválida   | `BUG - base inválida`             |
-| START ausente   | `BUG - START ausente`             |
-| STOP ausente    | `BUG - STOP ausente`              |
-| Frameshift      | `BUG - frameshift`                |
-| STOP prematuro  | `BUG - nonsense / STOP prematuro` |
+## 🧬 BioCompiler 2.0
 
----
+O BioCompiler 2.0 recebe uma sequência de pré-mRNA e realiza:
 
-## Regras biológicas utilizadas
+1. validação das bases A, U, C e G;
+2. identificação do sítio 5' `GU`;
+3. identificação do branch point `A`;
+4. identificação do sítio 3' `AG`;
+5. validação do intron;
+6. splicing;
+7. adição do CAP 5' representado por `m7Gppp`;
+8. adição de exatamente 100 adeninas na extremidade 3';
+9. geração do mRNA maduro.
 
-### Bases válidas
+O BioCompiler 2.0 não realiza tradução para proteína.
 
-As sequências de DNA devem conter apenas:
+## 🏗️ Tecnologias
 
-```text
-A
-T
-C
-G
-```
+### Backend
 
----
+* Python
+* FastAPI
+* Pydantic
+* Uvicorn
+* Pytest
 
-### Códon START
+### Frontend
 
-O início da região codificante é identificado pelo códon:
+Planejado:
 
-```text
-ATG
-```
+* React
+* Vercel
 
----
+### Deploy
 
-### Códons STOP
+* Backend: Railway
+* Frontend: Vercel
 
-Os códons de término considerados são:
-
-```text
-TAA
-TAG
-TGA
-```
-
-A busca pelos códons STOP é realizada respeitando o quadro de leitura definido a partir do START.
-
----
-
-## Fluxo de análise
-
-```text
-Sequência de DNA
-        │
-        ▼
-Validação das bases
-        │
-        ▼
-Identificação do START
-        │
-        ▼
-Determinação do quadro de leitura
-        │
-        ▼
-Verificação de Frameshift
-        │
-        ▼
-Busca por STOP
-        │
-        ▼
-Verificação de STOP prematuro
-        │
-        ▼
-Classificação da sequência
-        │
-        ▼
-Transcrição DNA → pré-mRNA
-```
-
----
-
-## Estrutura do projeto
+## 📁 Estrutura
 
 ```text
 biocompiler/
-│
 ├── backend/
-│   │
 │   ├── app/
 │   │   ├── core/
 │   │   ├── routes/
 │   │   ├── schemas/
-│   │   ├── services/
-│   │   └── main.py
-│   │
-│   ├── tests/
-│   └── requirements.txt
+│   │   └── services/
+│   │       ├── bio_compiler_1/
+│   │       └── bio_compiler_2/
+│   └── tests/
 │
 ├── samples/
-│   └── sequences.txt
+│   ├── biocompiler_1/
+│   └── biocompiler_2/
 │
 ├── .gitignore
 └── README.md
 ```
 
----
+## 🚀 Executando localmente
 
-## Tecnologias utilizadas
-
-* Python
-* FastAPI
-* Uvicorn
-* Pytest
-
----
-
-## Instalação
-
-Clone o repositório:
+Entre na pasta do backend:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+cd backend
 ```
 
-Entre na pasta:
+Crie e ative o ambiente virtual:
 
 ```bash
-cd biocompiler/backend
+python -m venv venv
 ```
 
-Crie o ambiente virtual:
+Windows:
 
 ```bash
-python -m venv .venv
-```
-
-Ative o ambiente virtual.
-
-### Windows PowerShell
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-### Linux/macOS
-
-```bash
-source .venv/bin/activate
+venv\Scripts\activate
 ```
 
 Instale as dependências:
@@ -185,118 +111,78 @@ Instale as dependências:
 pip install -r requirements.txt
 ```
 
----
-
-## Executando o projeto
-
-Dentro da pasta `backend`:
+Execute a API:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-A API estará disponível em:
-
-```text
-http://127.0.0.1:8000
-```
-
----
-
-## Documentação da API
-
-O FastAPI disponibiliza automaticamente uma interface Swagger:
+A documentação interativa estará disponível em:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
----
+## 🔌 Principais endpoints
 
-## Endpoints
-
-### Health Check
-
-```http
-GET /health
-```
-
-Resposta:
-
-```json
-{
-    "status": "healthy"
-}
-```
-
----
-
-### Analisar sequência individual
-
-```http
-POST /analysis/sequence
-```
-
-Exemplo:
-
-```json
-{
-    "sequence": "TGCATGCTCGAACGGTCACCAACGGGTTAG"
-}
-```
-
----
-
-### Analisar arquivo
-
-```http
-POST /analysis/file
-```
-
-Recebe um arquivo `.txt` contendo uma sequência de DNA por linha.
-
-Exemplo:
+### BioCompiler 1.0
 
 ```text
-ATGAAATAG
-ATGCCCTAA
-CATCAAAAGGCGGAAAAGGAGGGTTAG
-```
-
----
-
-### Gerar relatório
-
-```http
+POST /analysis/sequence
+POST /analysis/file
 POST /analysis/file/report
 ```
 
-Recebe um arquivo `.txt` e retorna um relatório consolidado em formato `.txt`.
-
----
-
-## Formato de entrada
-
-O arquivo deve possuir uma sequência de DNA por linha:
+### BioCompiler 2.0
 
 ```text
-ATGAAATAG
-ATGCCCTAA
-ATGCXCGTAA
+POST /rna/process
+POST /rna/process/file
+POST /rna/process/file/report
 ```
 
----
+## 🧪 Executando os testes
 
-## Testes
-
-Para executar os testes automatizados:
+Na pasta `backend`:
 
 ```bash
-pytest
+pytest -v
 ```
 
----
+Para executar somente os testes do BioCompiler 2.0:
 
-## Autor
+```bash
+pytest tests/bio_compiler_2/ -v
+```
 
-Projeto desenvolvido como atividade acadêmica da disciplina de Bioinformática.
+## 📄 Entrada
+
+O BioCompiler 2.0 aceita arquivos `.txt` contendo uma sequência de pré-mRNA por linha.
+
+Exemplo:
+
+```text
+AUGCCGUCCCCCCCCCCACCCCCCCCCAGGCCAU
+```
+
+Cada linha é processada independentemente.
+
+## 📊 Resultado
+
+Para uma sequência válida, o sistema gera um mRNA maduro contendo:
+
+```text
+m7Gppp
++
+RNA após splicing
++
+100 A
+```
+
+## 🎓 Objetivo acadêmico
+
+O projeto tem finalidade didática e busca representar conceitos de bioinformática e biologia molecular por meio de uma implementação computacional modular.
+
+## 👨‍💻 Autor
+
+Projeto acadêmico — BioCompiler.

@@ -4,17 +4,12 @@ __pycache__/
 *$py.class
 
 # Virtual environment
-.venv/
 venv/
+.venv/
 env/
-
-# Environment variables
-.env
 
 # Pytest
 .pytest_cache/
-
-# Coverage
 .coverage
 htmlcov/
 
@@ -22,10 +17,17 @@ htmlcov/
 .vscode/
 .idea/
 
-# OS
+# Operating system
 .DS_Store
 Thumbs.db
 
-# Generated reports
-reports/
+# Environment variables
+.env
+.env.*
+
+# Logs
 *.log
+
+# Temporary files
+*.tmp
+*.temp

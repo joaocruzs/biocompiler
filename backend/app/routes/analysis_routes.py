@@ -1,37 +1,33 @@
-from io import BytesIO
+"""
+Biocompiler 1.0 - Rotas
+"""
 
+from io import BytesIO
 from fastapi import (
     APIRouter,
     UploadFile,
     File
 )
-
 from fastapi.responses import StreamingResponse
-
-from app.schemas.analysis import (
+from app.schemas.analysis_schemas import (
     SequenceRequest,
     AnalysisResponse,
     BatchAnalysisResponse
 )
-
 from app.services.sequence_analyzer import (
     analyze_sequence
 )
-
 from app.services.file_analysis_service import (
     process_uploaded_file
 )
-
 from app.services.text_report_service import (
     generate_text_report
 )
 
-
 router = APIRouter(
     prefix="/analysis",
-    tags=["Analysis"]
+    tags=["BioCompiler 1.0 - Analysis"],
 )
-
 
 @router.post(
     "/sequence",
@@ -44,7 +40,6 @@ def analyze_single_sequence(
     return analyze_sequence(
         request.sequence
     )
-
 
 @router.post(
     "/file",
@@ -60,7 +55,6 @@ async def analyze_file(
         filename=file.filename,
         content=content
     )
-
 
 @router.post("/file/report")
 async def generate_file_report(
