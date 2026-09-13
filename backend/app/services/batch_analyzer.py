@@ -1,4 +1,4 @@
-from app.services.sequence_analyzer import analyze_sequence
+from app.services.biocompiler1.sequence_analyzer import analyze_sequence
 
 
 def analyze_sequences(sequences: list[str]) -> list[dict]:

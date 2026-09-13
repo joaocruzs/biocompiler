@@ -11,6 +11,9 @@ from app.schemas.rna_schemas import (
 from app.services.biocompiler2.rna_processor import (
     process_pre_mrna,
 )
+from app.services.biocompiler2.rna_text_report_service import (
+    generate_rna_text_report,
+)
 
 router = APIRouter(
     prefix="/rna",
@@ -75,6 +78,10 @@ async def process_rna_file(
     "/process/file/report",
     response_class=PlainTextResponse,
 )
+@router.post(
+    "/process/file/report",
+    response_class=PlainTextResponse,
+)
 async def process_rna_file_report(
     file: UploadFile = File(...)
 ):
@@ -100,40 +107,27 @@ async def process_rna_file_report(
         if line.strip()
     ]
 
-    report_lines = [
-        "linha;status;resultado;mRNA_maduro"
-    ]
+    results = []
 
     for line_number, sequence in enumerate(
         sequences,
         start=1
     ):
-
         result = process_pre_mrna(sequence)
 
-        status = result["status"]
-        diagnostic = result["diagnostic"]
+        results.append({
+            "line": line_number,
+            "sequence": sequence,
+            **result,
+        })
 
-        mature_mrna = (
-            result["mature_mrna"]
-            if result["mature_mrna"] is not None
-            else "NÃO GERADO"
-        )
-
-        report_lines.append(
-            f"{line_number};"
-            f"{status};"
-            f"{diagnostic};"
-            f"{mature_mrna}"
-        )
-
-    report = "\n".join(report_lines)
+    report = generate_rna_text_report(results)
 
     return PlainTextResponse(
         content=report,
         media_type="text/plain; charset=utf-8",
         headers={
             "Content-Disposition":
-                'attachment; filename="biocompiler_2_report.txt"'
+                'attachment; filename="relatorio_biocompiler2.txt"'
         },
     )

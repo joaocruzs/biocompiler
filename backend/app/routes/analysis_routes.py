@@ -14,13 +14,13 @@ from app.schemas.analysis_schemas import (
     AnalysisResponse,
     BatchAnalysisResponse
 )
-from app.services.sequence_analyzer import (
+from app.services.biocompiler1.sequence_analyzer import (
     analyze_sequence
 )
 from app.services.file_analysis_service import (
     process_uploaded_file
 )
-from app.services.text_report_service import (
+from app.services.biocompiler1.text_report_service import (
     generate_text_report
 )
 
@@ -82,6 +82,6 @@ async def generate_file_report(
         media_type="text/plain",
         headers={
             "Content-Disposition":
-            "attachment; filename=relatorio_biocompiler.txt"
+            "attachment; filename=relatorio_biocompiler1.txt"
         }
     )

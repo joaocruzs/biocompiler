@@ -4,8 +4,8 @@ from app.core.constants import (
     STOP_CODONS,
 )
 
-from app.services.dna_validator import validate_sequence
-from app.services.transcription_service import transcribe_dna_to_mrna
+from app.services.biocompiler1.dna_validator import validate_sequence
+from app.services.biocompiler1.transcription_service import transcribe_dna_to_mrna
 
 
 def build_result(
