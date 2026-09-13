@@ -28,7 +28,7 @@ def validate_intron(sequence: str) -> dict:
     # CASO 2 — sítio 5' ausente
     # --------------------------------------------------
 
-    if not five_prime_sites:
+    if not five_prime_sites or five_prime_sites > three_prime_sites:
 
         if three_prime_sites:
             return {
@@ -43,7 +43,7 @@ def validate_intron(sequence: str) -> dict:
     # CASO 3 — sítio 3' ausente
     # --------------------------------------------------
 
-    if five_prime_sites and not three_prime_sites:
+    if not three_prime_sites or three_prime_sites < five_prime_sites:
 
         return {
             "status": "ERRO",
