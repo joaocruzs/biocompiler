@@ -7,6 +7,10 @@ from app.core.constants import (
 from app.services.biocompiler1.dna_validator import validate_sequence
 from app.services.biocompiler1.transcription_service import transcribe_dna_to_mrna
 
+"""
+ARQUIVO PRINCIPAL DO BIOCOMPILER 1.0
+Cria um resultado padronizado para todas as análises.
+"""
 
 def build_result(
     sequence: str,
@@ -16,9 +20,6 @@ def build_result(
     stop_codon=None,
     mrna=None
 ):
-    """
-    Cria um resultado padronizado para todas as análises.
-    """
 
     return {
         "sequence": sequence,
@@ -31,10 +32,6 @@ def build_result(
 
 
 def analyze_sequence(sequence: str) -> dict:
-    """
-    Analisa uma sequência de DNA seguindo as regras
-    estabelecidas pelo BioCompiler.
-    """
 
     sequence = sequence.strip().upper()
 

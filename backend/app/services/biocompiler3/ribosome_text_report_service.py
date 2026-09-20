@@ -1,15 +1,12 @@
-def generate_rna_text_report(
+def generate_ribosome_text_report(
     results: list[dict]
 ) -> str:
     """
-    Gera o relatório tabular do BioCompiler 2.0.
-
-    Formato:
-    linha;status;resultado;mRNA_maduro
+    Gera o relatório tabular do Ribossomo.
     """
 
     report_lines = [
-        "linha;status;resultado;mRNA_maduro"
+        "linha;status;resultado;proteina"
     ]
 
     for result in results:
@@ -20,17 +17,17 @@ def generate_rna_text_report(
 
         diagnostic = result["diagnostic"]
 
-        mature_mrna = (
-            result["mature_mrna"]
-            if result.get("mature_mrna") is not None
-            else "NÃO GERADO"
+        protein = (
+            result["protein"]
+            if result.get("protein") is not None
+            else "NÃO GERADA"
         )
 
         report_lines.append(
             f"{line};"
             f"{status};"
             f"{diagnostic};"
-            f"{mature_mrna}"
+            f"{protein}"
         )
 
     return "\n".join(report_lines)

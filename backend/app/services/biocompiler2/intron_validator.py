@@ -7,26 +7,25 @@ from app.services.biocompiler2.splice_site_detector import (
     find_three_prime_sites,
 )
 
+"""
+ARQUIVO 3 DO BIOCOMPILER 2.0
+Analisa a sequência de pré-mRNA e identifica
+se existe um intron válido.
+
+Retorna um dicionário contendo:
+    status
+    diagnostic
+    five_prime_site
+    branch_point
+    three_prime_site
+"""
 
 def validate_intron(sequence: str) -> dict:
-    """
-    Analisa a sequência de pré-mRNA e identifica
-    se existe um intron válido.
-
-    Retorna um dicionário contendo:
-        status
-        diagnostic
-        five_prime_site
-        branch_point
-        three_prime_site
-    """
 
     five_prime_sites = find_five_prime_sites(sequence)
     three_prime_sites = find_three_prime_sites(sequence)
 
-    # --------------------------------------------------
     # CASO 2 — sítio 5' ausente
-    # --------------------------------------------------
 
     if not five_prime_sites or five_prime_sites > three_prime_sites:
 
@@ -39,9 +38,7 @@ def validate_intron(sequence: str) -> dict:
                 "three_prime_site": None,
             }
 
-    # --------------------------------------------------
     # CASO 3 — sítio 3' ausente
-    # --------------------------------------------------
 
     if not three_prime_sites or three_prime_sites < five_prime_sites:
 
@@ -53,9 +50,7 @@ def validate_intron(sequence: str) -> dict:
             "three_prime_site": None,
         }
 
-    # --------------------------------------------------
     # Procurar uma combinação GU ... AG
-    # --------------------------------------------------
 
     for five_prime in five_prime_sites:
 
@@ -94,9 +89,7 @@ def validate_intron(sequence: str) -> dict:
                         "three_prime_site": three_prime,
                     }
 
-    # --------------------------------------------------
     # CASO 4 — branch point inválido
-    # --------------------------------------------------
 
     return {
         "status": "ERRO",

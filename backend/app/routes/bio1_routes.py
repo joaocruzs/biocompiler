@@ -9,28 +9,22 @@ from fastapi import (
     File
 )
 from fastapi.responses import StreamingResponse
-from app.schemas.analysis_schemas import (
+from app.schemas.bio1_schemas import (
     SequenceRequest,
     AnalysisResponse,
     BatchAnalysisResponse
 )
-from app.services.biocompiler1.sequence_analyzer import (
-    analyze_sequence
-)
-from app.services.file_analysis_service import (
-    process_uploaded_file
-)
-from app.services.biocompiler1.text_report_service import (
-    generate_text_report
-)
+from app.services.biocompiler1.sequence_analyzer import ( analyze_sequence )
+from app.services.common.file_analysis_service import ( process_uploaded_file )
+from app.services.biocompiler1.text_report_transcribe import ( generate_text_report )
 
 router = APIRouter(
-    prefix="/analysis",
-    tags=["BioCompiler 1.0 - Analysis"],
+    prefix="/bio1",
+    tags=["BioCompiler 1.0"],
 )
 
 @router.post(
-    "/sequence",
+    "/transcribe",
     response_model=AnalysisResponse
 )
 def analyze_single_sequence(
@@ -42,7 +36,7 @@ def analyze_single_sequence(
     )
 
 @router.post(
-    "/file",
+    "/transcribe/file",
     response_model=BatchAnalysisResponse
 )
 async def analyze_file(
@@ -56,7 +50,7 @@ async def analyze_file(
         content=content
     )
 
-@router.post("/file/report")
+@router.post("/transcribe/file/report")
 async def generate_file_report(
     file: UploadFile = File(...)
 ):

@@ -2,7 +2,7 @@
 
 Projeto acadêmico de bioinformática desenvolvido para simular, de forma didática, etapas do fluxo de informação genética.
 
-## 🧬 Sobre o projeto
+## Sobre o projeto
 
 O BioCompiler simula etapas do processamento de informações genéticas utilizando programação.
 
@@ -13,7 +13,7 @@ O projeto está dividido em versões:
 
 O BioCompiler 2.0 recebe um pré-mRNA e simula sua maturação até a formação do mRNA maduro.
 
-## 🧪 BioCompiler 1.0
+## BioCompiler 1.0
 
 O BioCompiler 1.0 trabalha com uma sequência de DNA e realiza:
 
@@ -25,7 +25,7 @@ O BioCompiler 1.0 trabalha com uma sequência de DNA e realiza:
 * transcrição de DNA para pré-mRNA;
 * geração de relatório.
 
-## 🧬 BioCompiler 2.0
+## BioCompiler 2.0
 
 O BioCompiler 2.0 recebe uma sequência de pré-mRNA e realiza:
 
@@ -41,7 +41,7 @@ O BioCompiler 2.0 recebe uma sequência de pré-mRNA e realiza:
 
 O BioCompiler 2.0 não realiza tradução para proteína.
 
-## 🏗️ Tecnologias
+## Tecnologias
 
 ### Backend
 
@@ -63,7 +63,7 @@ Planejado:
 * Backend: Railway
 * Frontend: Vercel
 
-## 📁 Estrutura
+## Estrutura
 
 ```text
 biocompiler/
@@ -85,7 +85,7 @@ biocompiler/
 └── README.md
 ```
 
-## 🚀 Executando localmente
+## Executando localmente
 
 Entre na pasta do backend:
 
@@ -123,7 +123,7 @@ A documentação interativa estará disponível em:
 http://127.0.0.1:8000/docs
 ```
 
-## 🔌 Principais endpoints
+## Principais endpoints
 
 ### BioCompiler 1.0
 
@@ -141,7 +141,7 @@ POST /rna/process/file
 POST /rna/process/file/report
 ```
 
-## 🧪 Executando os testes
+## Executando os testes
 
 Na pasta `backend`:
 
@@ -155,7 +155,7 @@ Para executar somente os testes do BioCompiler 2.0:
 pytest tests/bio_compiler_2/ -v
 ```
 
-## 📄 Entrada
+## Entrada
 
 O BioCompiler 2.0 aceita arquivos `.txt` contendo uma sequência de pré-mRNA por linha.
 
@@ -167,7 +167,7 @@ AUGCCGUCCCCCCCCCCACCCCCCCCCAGGCCAU
 
 Cada linha é processada independentemente.
 
-## 📊 Resultado
+## Resultado
 
 Para uma sequência válida, o sistema gera um mRNA maduro contendo:
 
@@ -179,10 +179,14 @@ RNA após splicing
 100 A
 ```
 
-## 🎓 Objetivo acadêmico
+## Objetivo acadêmico
 
 O projeto tem finalidade didática e busca representar conceitos de bioinformática e biologia molecular por meio de uma implementação computacional modular.
 
-## 👨‍💻 Autor
+## Autoria
+
+Universidade Federal do Piauí, Tópicos em Bioinformática.
+
+Leticia Lopes e João Victor Cruz.
 
 Projeto acadêmico — BioCompiler.

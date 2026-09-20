@@ -2,26 +2,17 @@ from fastapi import HTTPException
 
 from app.core.constants import MAX_FILE_SIZE
 
-from app.services.file_service import (
-    read_sequences_from_file
-)
-
-from app.services.batch_analyzer import (
-    analyze_sequences
-)
-
-from app.services.report_service import (
-    generate_summary
-)
-
+from app.services.common.file_service import ( read_sequences_from_file )
+from app.services.common.batch_analyzer import ( analyze_sequences )
+from app.services.common.report_service import ( generate_summary )
 
 def process_uploaded_file(
     filename: str,
     content: bytes
 ) -> dict:
     """
-    Processa um arquivo TXT contendo
-    sequências de DNA.
+    ARQUIVO CENTRAL DO COMMON SERVICE
+    Processa o arquivo enviado, realizando a análise das sequências contidas nele.
     """
 
     if not filename.lower().endswith(".txt"):

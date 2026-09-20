@@ -4,31 +4,27 @@ Biocompiler 2.0 - Rotas
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import PlainTextResponse
-from app.schemas.rna_schemas import (
+from app.schemas.bio2_schemas import (
     RNAProcessingRequest,
     RNAProcessingResponse,
 )
-from app.services.biocompiler2.rna_processor import (
-    process_pre_mrna,
-)
-from app.services.biocompiler2.rna_text_report_service import (
-    generate_rna_text_report,
-)
+from app.services.biocompiler2.rna_processor import ( process_pre_mrna,)
+from app.services.biocompiler2.text_report_generate import ( generate_text_report, )
 
 router = APIRouter(
-    prefix="/rna",
-    tags=["BioCompiler 2.0 - RNA Processor"],
+    prefix="/bio2",
+    tags=["BioCompiler 2.0"],
 )
 
 @router.post(
-    "/process",
+    "/generate",
     response_model=RNAProcessingResponse,
 )
 def process_rna(request: RNAProcessingRequest):
     result = process_pre_mrna(request.sequence)
     return result
 
-@router.post("/process/file")
+@router.post("/generate/file")
 async def process_rna_file(
     file: UploadFile = File(...)
 ):
@@ -75,13 +71,10 @@ async def process_rna_file(
 
 
 @router.post(
-    "/process/file/report",
+    "/generate/file/report",
     response_class=PlainTextResponse,
 )
-@router.post(
-    "/process/file/report",
-    response_class=PlainTextResponse,
-)
+
 async def process_rna_file_report(
     file: UploadFile = File(...)
 ):
@@ -121,7 +114,7 @@ async def process_rna_file_report(
             **result,
         })
 
-    report = generate_rna_text_report(results)
+    report = generate_text_report(results)
 
     return PlainTextResponse(
         content=report,
