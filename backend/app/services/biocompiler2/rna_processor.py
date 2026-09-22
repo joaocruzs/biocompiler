@@ -1,20 +1,22 @@
+"""
+ARQUIVO PRINCIPAL DO BIOCOMPILER 2.0
+Processa um pré-mRNA completo:
+
+1. Validação (rna_validator)
+2. Identificação dos sinais de splicing
+    (intron_validator --> splice_site_detector)
+3. Splicing (splicing_service)
+4. CAP 5' (capping_service)
+5. Cauda poli-A (poly_a_service)
+"""
+
 from app.services.biocompiler2.rna_validator import validate_rna
 from app.services.biocompiler2.intron_validator import validate_intron
 from app.services.biocompiler2.splicing_service import splice
 from app.services.biocompiler2.capping_service import add_cap
 from app.services.biocompiler2.poly_a_service import add_poly_a
 
-
 def process_pre_mrna(sequence: str) -> dict:
-    """
-    Processa um pré-mRNA completo:
-
-    1. Validação
-    2. Identificação dos sinais de splicing
-    3. Splicing
-    4. CAP 5'
-    5. Cauda poli-A
-    """
 
     sequence = sequence.strip().upper()
 

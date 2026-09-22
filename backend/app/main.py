@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.analysis_routes import router as analysis_router
-from app.routes.rna_routes import router as rna_router
+from app.routes.bio1_routes import router as analysis_router
+from app.routes.bio2_routes import router as rna_router
+from app.routes.bio3_routes import router as ribosome_router
 
 app = FastAPI(
     title="BioCompiler API",
     description="API para análise de sequências genéticas DNA → pré-mRNA → mRNA maduro",
-    version="2.0.0"
+    version="3.0.0"
 )
 
 app.add_middleware(
@@ -19,6 +20,7 @@ app.add_middleware(
 
 app.include_router(analysis_router)
 app.include_router(rna_router)
+app.include_router(ribosome_router)
 
 @app.get("/")
 def root():

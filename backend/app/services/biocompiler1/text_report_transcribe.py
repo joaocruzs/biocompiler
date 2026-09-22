@@ -1,11 +1,13 @@
+"""
+ARQUIVO FINAL DO BIOCOMPILER 1.0
+Gera um relatório em formato TXT
+com os resultados da análise.
+"""
+
 def generate_text_report(
     results: list[dict],
     summary: dict
 ) -> str:
-    """
-    Gera um relatório em formato TXT
-    com os resultados da análise.
-    """
 
     report = []
 

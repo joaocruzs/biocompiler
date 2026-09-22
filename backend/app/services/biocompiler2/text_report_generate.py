@@ -1,12 +1,13 @@
-def generate_rna_text_report(
+"""
+ARQUIVO FINAL DO BIOCOMPILER 2.0
+Gera o relatório tabular do BioCompiler 2.0.
+Formato: linha;status;resultado;mRNA_maduro
+"""
+
+def generate_text_report(
     results: list[dict]
 ) -> str:
-    """
-    Gera o relatório tabular do BioCompiler 2.0.
 
-    Formato:
-    linha;status;resultado;mRNA_maduro
-    """
 
     report_lines = [
         "linha;status;resultado;mRNA_maduro"

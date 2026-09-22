@@ -1,7 +1,3 @@
-"""
-Biocompiler 1.0 - Rotas
-"""
-
 from io import BytesIO
 from fastapi import (
     APIRouter,
@@ -9,45 +5,34 @@ from fastapi import (
     File
 )
 from fastapi.responses import StreamingResponse
-from app.schemas.analysis_schemas import (
+from app.schemas.bio1_schemas import (
     SequenceRequest,
     AnalysisResponse,
     BatchAnalysisResponse
 )
-from app.services.biocompiler1.sequence_analyzer import (
-    analyze_sequence
-)
-from app.services.file_analysis_service import (
-    process_uploaded_file
-)
-from app.services.biocompiler1.text_report_service import (
-    generate_text_report
-)
+from app.services.biocompiler1.sequence_analyzer import ( analyze_sequence )
+from app.services.common.file_analysis_service import ( process_uploaded_file )
+from app.services.biocompiler1.text_report_transcribe import ( generate_text_report )
 
 router = APIRouter(
-    prefix="/analysis",
-    tags=["BioCompiler 1.0 - Analysis"],
+    prefix="/bio1",
+    tags=["BioCompiler 1.0"],
 )
 
 @router.post(
-    "/sequence",
+    "/transcribe",
     response_model=AnalysisResponse
 )
-def analyze_single_sequence(
-    request: SequenceRequest
-):
 
-    return analyze_sequence(
-        request.sequence
-    )
+def analyze_single_sequence( request: SequenceRequest ):
+
+    return analyze_sequence( request.sequence )
 
 @router.post(
-    "/file",
+    "/transcribe/file",
     response_model=BatchAnalysisResponse
 )
-async def analyze_file(
-    file: UploadFile = File(...)
-):
+async def analyze_file( file: UploadFile = File(...)):
 
     content = await file.read()
 
@@ -56,7 +41,7 @@ async def analyze_file(
         content=content
     )
 
-@router.post("/file/report")
+@router.post("/transcribe/file/report")
 async def generate_file_report(
     file: UploadFile = File(...)
 ):
@@ -73,9 +58,7 @@ async def generate_file_report(
         analysis["summary"]
     )
 
-    report_bytes = BytesIO(
-        report.encode("utf-8")
-    )
+    report_bytes = BytesIO( report.encode("utf-8"))
 
     return StreamingResponse(
         report_bytes,

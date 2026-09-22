@@ -1,7 +1,3 @@
-"""
-Biocompiler 1.0 - Schemas
-"""
-
 from typing import Optional
 from pydantic import BaseModel
 
