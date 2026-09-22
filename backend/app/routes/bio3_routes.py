@@ -1,91 +1,43 @@
 from io import BytesIO
 
-from fastapi import APIRouter, HTTPException, UploadFile, File
-from fastapi.responses import PlainTextResponse
+from fastapi import (
+    APIRouter,
+    UploadFile,
+    File
+)
+
+from fastapi.responses import StreamingResponse
 
 from app.schemas.bio3_schemas import (
     RibosomeRequest,
-    RibosomeResponse,
+    RibosomeResponse
 )
 
-from app.services.biocompiler3.ribosome_processor import (
-    process_mature_mrna,
-)
-
+from app.services.biocompiler3.ribosome_processor import ( process_mature_mrna )
+from app.services.biocompiler3.text_report_translate import ( generate_text_report )
 
 router = APIRouter(
     prefix="/bio3",
-    tags=["BioCompiler 3.0 - Sr. Ribossomo"],
+    tags=["BioCompiler 3.0"],
 )
-
-
-# ============================================================
-# PROCESSAMENTO DE UMA SEQUÊNCIA
-# ============================================================
 
 @router.post(
     "/translate",
-    response_model=RibosomeResponse,
+    response_model=RibosomeResponse
 )
-def process_sequence(request: RibosomeRequest):
-    """
-    Processa uma sequência de mRNA maduro.
-    """
 
-    sequence = request.sequence.strip()
+def translate_single_sequence( request: RibosomeRequest ):
 
-    if not sequence:
-        raise HTTPException(
-            status_code=400,
-            detail="A sequência não pode estar vazia.",
-        )
+    return process_mature_mrna( request.sequence )
 
-    result = process_mature_mrna(sequence)
-
-    return result
-
-
-# ============================================================
-# PROCESSAMENTO DE ARQUIVO
-# ============================================================
-
-@router.post(
-    "/translate/file",
-)
-async def process_file(
-    file: UploadFile = File(...),
+@router.post("/translate/file")
+async def translate_file(
+    file: UploadFile = File(...)
 ):
-    """
-    Processa um arquivo TXT contendo uma sequência por linha.
-    """
-
-    if not file.filename:
-        raise HTTPException(
-            status_code=400,
-            detail="Nome do arquivo não informado.",
-        )
-
-    if not file.filename.lower().endswith(".txt"):
-        raise HTTPException(
-            status_code=400,
-            detail="Apenas arquivos .txt são permitidos.",
-        )
 
     content = await file.read()
 
-    if not content:
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo está vazio.",
-        )
-
-    try:
-        text = content.decode("utf-8")
-    except UnicodeDecodeError:
-        raise HTTPException(
-            status_code=400,
-            detail="Erro ao ler o arquivo. Utilize UTF-8.",
-        )
+    text = content.decode("utf-8")
 
     sequences = [
         line.strip()
@@ -93,16 +45,14 @@ async def process_file(
         if line.strip()
     ]
 
-    if not sequences:
-        raise HTTPException(
-            status_code=400,
-            detail="Nenhuma sequência encontrada no arquivo.",
-        )
-
     results = []
 
-    for line_number, sequence in enumerate(sequences, start=1):
-        result = process_mature_mrna(sequence)
+    for line_number, sequence in enumerate(
+        sequences,
+        start=1
+    ):
+
+        result = process_mature_mrna( sequence )
 
         result["line"] = line_number
 
@@ -110,56 +60,18 @@ async def process_file(
 
     return {
         "total": len(results),
-        "results": results,
+        "results": results
     }
 
 
-# ============================================================
-# PROCESSAMENTO DE ARQUIVO COM RELATÓRIO TABULAR
-# ============================================================
-
-@router.post(
-    "/translate/file/report",
-    response_class=PlainTextResponse,
-)
-async def process_file_report(
-    file: UploadFile = File(...),
+@router.post("/translate/file/report")
+async def generate_file_report(
+    file: UploadFile = File(...)
 ):
-    """
-    Processa um arquivo TXT e retorna um relatório tabular.
-
-    Formato:
-
-    linha;status;resultado;proteina
-    """
-
-    if not file.filename:
-        raise HTTPException(
-            status_code=400,
-            detail="Nome do arquivo não informado.",
-        )
-
-    if not file.filename.lower().endswith(".txt"):
-        raise HTTPException(
-            status_code=400,
-            detail="Apenas arquivos .txt são permitidos.",
-        )
 
     content = await file.read()
 
-    if not content:
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo está vazio.",
-        )
-
-    try:
-        text = content.decode("utf-8")
-    except UnicodeDecodeError:
-        raise HTTPException(
-            status_code=400,
-            detail="Erro ao ler o arquivo. Utilize UTF-8.",
-        )
+    text = content.decode("utf-8")
 
     sequences = [
         line.strip()
@@ -167,39 +79,28 @@ async def process_file_report(
         if line.strip()
     ]
 
-    if not sequences:
-        raise HTTPException(
-            status_code=400,
-            detail="Nenhuma sequência encontrada no arquivo.",
-        )
+    results = []
 
-    report_lines = [
-        "linha;status;resultado;proteina"
-    ]
+    for line_number, sequence in enumerate(
+        sequences,
+        start=1
+    ):
 
-    for line_number, sequence in enumerate(sequences, start=1):
-        result = process_mature_mrna(sequence)
+        result = process_mature_mrna( sequence )
 
-        status = result.get("status", "ERRO")
-        diagnostic = result.get(
-            "diagnostic",
-            "Erro desconhecido",
-        )
+        result["line"] = line_number
 
-        protein = result.get("protein")
+        results.append(result)
 
-        if protein is None:
-            protein = "NÃO GERADA"
+    report = generate_text_report( results )
 
-        report_line = (
-            f"{line_number};"
-            f"{status};"
-            f"{diagnostic};"
-            f"{protein}"
-        )
+    report_bytes = BytesIO( report.encode("utf-8"))
 
-        report_lines.append(report_line)
-
-    report = "\n".join(report_lines)
-
-    return report
+    return StreamingResponse(
+        report_bytes,
+        media_type="text/plain",
+        headers={
+            "Content-Disposition":
+            "attachment; filename=relatorio_biocompiler3.txt"
+        }
+    )

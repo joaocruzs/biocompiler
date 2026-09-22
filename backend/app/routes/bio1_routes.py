@@ -1,7 +1,3 @@
-"""
-Biocompiler 1.0 - Rotas
-"""
-
 from io import BytesIO
 from fastapi import (
     APIRouter,
@@ -27,21 +23,16 @@ router = APIRouter(
     "/transcribe",
     response_model=AnalysisResponse
 )
-def analyze_single_sequence(
-    request: SequenceRequest
-):
 
-    return analyze_sequence(
-        request.sequence
-    )
+def analyze_single_sequence( request: SequenceRequest ):
+
+    return analyze_sequence( request.sequence )
 
 @router.post(
     "/transcribe/file",
     response_model=BatchAnalysisResponse
 )
-async def analyze_file(
-    file: UploadFile = File(...)
-):
+async def analyze_file( file: UploadFile = File(...)):
 
     content = await file.read()
 
@@ -67,9 +58,7 @@ async def generate_file_report(
         analysis["summary"]
     )
 
-    report_bytes = BytesIO(
-        report.encode("utf-8")
-    )
+    report_bytes = BytesIO( report.encode("utf-8"))
 
     return StreamingResponse(
         report_bytes,

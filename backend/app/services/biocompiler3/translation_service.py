@@ -1,9 +1,10 @@
-from app.core.constants import STOP_CODONS
+from app.core.constants import RNA_STOP_CODONS
 from app.services.biocompiler3.genetic_code import ( GENETIC_CODE )
 
 
 def translate(sequence: str) -> tuple[bool, str | None, str | None]:
     """
+    ARQUIVO 4 DO BIOCOMPILER 3.0
     Traduz a região codificante em trincas.
 
     Retorna:
@@ -25,7 +26,7 @@ def translate(sequence: str) -> tuple[bool, str | None, str | None]:
                 "BUG - quadro de leitura"
             )
 
-        if codon in STOP_CODONS:
+        if codon in RNA_STOP_CODONS:
             return (
                 True,
                 "-".join(protein),

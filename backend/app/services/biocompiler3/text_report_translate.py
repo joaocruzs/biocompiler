@@ -1,7 +1,8 @@
-def generate_ribosome_text_report(
+def generate_text_report(
     results: list[dict]
 ) -> str:
     """
+    ARQUIVO FINAL DO BIOCOMPILER 2.0
     Gera o relatório tabular do Ribossomo.
     """
 

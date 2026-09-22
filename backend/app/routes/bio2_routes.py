@@ -1,15 +1,20 @@
-"""
-Biocompiler 2.0 - Rotas
-"""
+from io import BytesIO
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import PlainTextResponse
+from fastapi import (
+    APIRouter,
+    UploadFile,
+    File
+)
+
+from fastapi.responses import StreamingResponse
+
 from app.schemas.bio2_schemas import (
     RNAProcessingRequest,
-    RNAProcessingResponse,
+    RNAProcessingResponse
 )
-from app.services.biocompiler2.rna_processor import ( process_pre_mrna,)
-from app.services.biocompiler2.text_report_generate import ( generate_text_report, )
+
+from app.services.biocompiler2.rna_processor import ( process_pre_mrna )
+from app.services.biocompiler2.text_report_generate import ( generate_text_report )
 
 router = APIRouter(
     prefix="/bio2",
@@ -18,31 +23,20 @@ router = APIRouter(
 
 @router.post(
     "/generate",
-    response_model=RNAProcessingResponse,
+    response_model=RNAProcessingResponse
 )
-def process_rna(request: RNAProcessingRequest):
-    result = process_pre_mrna(request.sequence)
-    return result
+def process_rna( request: RNAProcessingRequest ):
 
-@router.post("/generate/file")
+    return process_pre_mrna( request.sequence )
+
+@router.post( "/generate/file")
 async def process_rna_file(
     file: UploadFile = File(...)
 ):
-    if not file.filename.lower().endswith(".txt"):
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo deve ser .txt"
-        )
 
     content = await file.read()
 
-    try:
-        text = content.decode("utf-8")
-    except UnicodeDecodeError:
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo deve estar em UTF-8"
-        )
+    text = content.decode("utf-8")
 
     sequences = [
         line.strip()
@@ -56,7 +50,8 @@ async def process_rna_file(
         sequences,
         start=1
     ):
-        result = process_pre_mrna(sequence)
+
+        result = process_pre_mrna( sequence )
 
         results.append({
             "line": line_number,
@@ -70,29 +65,14 @@ async def process_rna_file(
     }
 
 
-@router.post(
-    "/generate/file/report",
-    response_class=PlainTextResponse,
-)
-
+@router.post( "/generate/file/report" )
 async def process_rna_file_report(
     file: UploadFile = File(...)
 ):
-    if not file.filename.lower().endswith(".txt"):
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo deve ser .txt"
-        )
 
     content = await file.read()
 
-    try:
-        text = content.decode("utf-8")
-    except UnicodeDecodeError:
-        raise HTTPException(
-            status_code=400,
-            detail="O arquivo deve estar em UTF-8"
-        )
+    text = content.decode("utf-8")
 
     sequences = [
         line.strip()
@@ -106,7 +86,8 @@ async def process_rna_file_report(
         sequences,
         start=1
     ):
-        result = process_pre_mrna(sequence)
+
+        result = process_pre_mrna( sequence )
 
         results.append({
             "line": line_number,
@@ -114,13 +95,18 @@ async def process_rna_file_report(
             **result,
         })
 
-    report = generate_text_report(results)
+    report = generate_text_report( results )
 
-    return PlainTextResponse(
-        content=report,
-        media_type="text/plain; charset=utf-8",
+    report_bytes = BytesIO(
+        report.encode("utf-8")
+    )
+
+    return StreamingResponse(
+        report_bytes,
+        media_type="text/plain",
         headers={
             "Content-Disposition":
-                'attachment; filename="relatorio_biocompiler2.txt"'
-        },
+                "attachment; "
+                "filename=relatorio_biocompiler2.txt"
+        }
     )

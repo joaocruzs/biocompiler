@@ -1,9 +1,7 @@
 from pydantic import BaseModel
 
-
 class RibosomeRequest(BaseModel):
     sequence: str
-
 
 class RibosomeResponse(BaseModel):
     status: str

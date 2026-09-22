@@ -5,6 +5,7 @@ def validate_poly_a(
     sequence: str
 ) -> tuple[bool, str | None, str | None]:
     """
+    ARQUIVO 2 DO BIOCOMPILER 3.0
     Valida a cauda poli-A e separa o corpo do mRNA.
 
     Retorna:

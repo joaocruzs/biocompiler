@@ -7,7 +7,7 @@ VALID_BASES = {"A", "T", "C", "G"}
 
 START_CODON = "ATG"
 
-STOP_CODONS = {
+RNA_STOP_CODONS = {
     "TAA",
     "TAG",
     "TGA"
@@ -40,3 +40,14 @@ MAX_BRANCH_DISTANCE = 30
 
 CAP_5 = "m7Gppp"
 POLY_A_LENGTH = 100
+
+
+
+# Constantes do Biocompiler 3.0
+RNA_START_CODON = "AUG"
+
+RNA_STOP_CODONS = {
+    "UAA",
+    "UAG",
+    "UGA"
+}

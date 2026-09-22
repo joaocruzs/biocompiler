@@ -1,7 +1,3 @@
-"""
-Biocompiler 2.0 - Schemas
-"""
-
 from pydantic import BaseModel
 
 class RNAProcessingRequest(BaseModel):

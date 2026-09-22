@@ -1,5 +1,3 @@
-from app.core.constants import RNA_BASES
-
 """
 ARQUIVO 1 DO BIOCOMPILER 2.0
 Valida uma sequência de pré-mRNA.
@@ -8,6 +6,8 @@ Retorna:
     (True, None) quando a sequência é válida.
     (False, mensagem) quando a sequência é inválida.
 """
+
+from app.core.constants import RNA_BASES
 
 def validate_rna(sequence: str) -> tuple[bool, str | None]:
 

@@ -1,12 +1,3 @@
-from app.core.constants import (
-    MIN_BRANCH_DISTANCE,
-    MAX_BRANCH_DISTANCE,
-)
-from app.services.biocompiler2.splice_site_detector import (
-    find_five_prime_sites,
-    find_three_prime_sites,
-)
-
 """
 ARQUIVO 3 DO BIOCOMPILER 2.0
 Analisa a sequência de pré-mRNA e identifica
@@ -19,6 +10,17 @@ Retorna um dicionário contendo:
     branch_point
     three_prime_site
 """
+
+from app.core.constants import (
+    MIN_BRANCH_DISTANCE,
+    MAX_BRANCH_DISTANCE,
+)
+from app.services.biocompiler2.splice_site_detector import (
+    find_five_prime_sites,
+    find_three_prime_sites,
+)
+
+
 
 def validate_intron(sequence: str) -> dict:
 

@@ -1,4 +1,3 @@
-
 """
 ARQUIVO 2 DO BIOCOMPILER 1.0
 Transcreve DNA para pré-mRNA.

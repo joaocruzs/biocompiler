@@ -1,7 +1,6 @@
 """
 ARQUIVO 4 DO BIOCOMPILER 2.0
-Remove o intron delimitado pelo sítio GU e pelo sítio AG.
-O GU e o AG também são removidos.
+Remove o intron delimitado pelo sítio GU e pelo sítio AG, além destes.
 Retorna a sequência com os éxons unidos.
 """
 

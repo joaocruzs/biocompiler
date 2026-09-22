@@ -1,3 +1,7 @@
+"""
+ARQUIVO 5 DO BIOCOMPILER 3.0
+"""
+
 GENETIC_CODE = {
     "AUG": "Met",
 

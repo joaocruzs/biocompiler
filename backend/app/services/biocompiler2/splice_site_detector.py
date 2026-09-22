@@ -1,5 +1,3 @@
-from app.core.constants import SPLICE_SITE_5, SPLICE_SITE_3
-
 """
 ARQUIVO 2 DO BIOCOMPILER 2.0
 Encontra todas as ocorrências do sítio 5' (GU).
@@ -8,6 +6,8 @@ Retorna os índices onde cada GU começa.
 Encontra todas as ocorrências do sítio 3' (AG).
 Retorna os índices onde cada AG começa.
 """
+
+from app.core.constants import SPLICE_SITE_5, SPLICE_SITE_3
 
 def find_five_prime_sites(sequence: str) -> list[int]:
 

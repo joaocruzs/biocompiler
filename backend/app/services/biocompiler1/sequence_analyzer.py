@@ -1,16 +1,16 @@
-from app.core.constants import (
-    AnalysisStatus,
-    START_CODON,
-    STOP_CODONS,
-)
-
-from app.services.biocompiler1.dna_validator import validate_sequence
-from app.services.biocompiler1.transcription_service import transcribe_dna_to_mrna
-
 """
 ARQUIVO PRINCIPAL DO BIOCOMPILER 1.0
 Cria um resultado padronizado para todas as análises.
 """
+
+from app.core.constants import (
+    AnalysisStatus,
+    START_CODON,
+    RNA_STOP_CODONS,
+)
+
+from app.services.biocompiler1.dna_validator import validate_sequence
+from app.services.biocompiler1.transcription_service import transcribe_dna_to_mrna
 
 def build_result(
     sequence: str,
@@ -70,7 +70,7 @@ def analyze_sequence(sequence: str) -> dict:
 
         codon = coding_sequence[i:i + 3]
 
-        if codon in STOP_CODONS:
+        if codon in RNA_STOP_CODONS:
             stop_position = start_index + i
             stop_codon = codon
             break

@@ -1,3 +1,12 @@
+"""
+ARQUIVO PRINCIPAL DO BIOCOMPILER 3.0:
+
+1. (cap_validator)
+2. (poly_a_validator)
+3. (coding_region_detector)
+4. (translation_service --> genetic_code)
+"""
+
 from app.core.constants import CAP_5
 from app.core.constants import RNA_BASES
 
