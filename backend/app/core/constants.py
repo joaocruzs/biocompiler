@@ -3,7 +3,7 @@ from enum import Enum
 # Constantes do Biocompiler 1.0
 MAX_FILE_SIZE = 1 * 1024 * 1024
 
-VALID_BASES = {"A", "T", "C", "G"}
+DNA_BASES = {"A", "T", "C", "G"}
 
 START_CODON = "ATG"
 
